@@ -37,7 +37,7 @@ services:
       SERVICE_NAME: metastore  # Diz que queremos subir o serviço de metastore, não outro componente do Hive.
       DB_DRIVER: postgres
       HADOOP_OPTIONAL_TOOLS: hadoop-aws
-      SKIP_SCHEMA_INIT: "true"
+      IS_RESUME: "true"
       SERVICE_OPTS: >-
         -Djavax.jdo.option.ConnectionDriverName=org.postgresql.Driver
         -Djavax.jdo.option.ConnectionURL=jdbc:postgresql://postgres:5432/metastore_db
@@ -67,6 +67,7 @@ services:
       - ./spark/conf/spark-defaults.conf:/opt/spark/conf/spark-defaults.conf
       - ./spark/jars/hadoop-aws-3.3.4.jar:/opt/spark/jars/hadoop-aws-3.3.4.jar
       - ./spark/jars/aws-java-sdk-bundle-1.12.262.jar:/opt/spark/jars/aws-java-sdk-bundle-1.12.262.jar
+      - /home/fabiano/Documentos/lakehouse-pipelines:/opt/project
 
 volumes:
   minio_data:
