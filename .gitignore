@@ -1,0 +1,23 @@
+# Environment
+.env
+
+# OS / Editor
+.DS_Store
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+
+# Logs
+*.log
+
+# Local jars / binaries
+docker/hive/lib/*.jar
+docker/hive/s3/*.jar
+docker/spark/jars/*.jar
+
+# Docker / local data
+data/
+tmp/

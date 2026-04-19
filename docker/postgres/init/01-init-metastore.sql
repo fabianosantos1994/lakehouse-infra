@@ -1,0 +1,2 @@
+CREATE USER hive WITH PASSWORD 'hive123';
+CREATE DATABASE metastore_db OWNER hive;
