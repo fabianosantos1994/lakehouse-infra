@@ -132,6 +132,17 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     command: scheduler
 
+  trino:
+    image: trinodb/trino:443
+    container_name: trino
+    depends_on:
+      - hive-metastore
+      - minio
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./trino/etc:/etc/trino
+
 volumes:
   minio_data:
   postgres_data:
