@@ -1,23 +1,43 @@
-# Environment
+# =========================
+# ENV / CONFIG
+# =========================
 .env
+docker/.env
 
-# OS / Editor
+# =========================
+# AIRFLOW
+# =========================
+airflow/logs/
+airflow/logs/*
+airflow/*.pid
+
+# =========================
+# DOCKER / VOLUMES
+# =========================
+docker/postgres/data/
+docker/minio/data/
+
+# =========================
+# JARS / DEPENDENCIES
+# =========================
+*.jar
+
+# =========================
+# TEMP FILES
+# =========================
+*.tmp
+*.log
+*.swp
 .DS_Store
-.vscode/
-.idea/
 
-# Python
+# =========================
+# PYTHON
+# =========================
 __pycache__/
 *.pyc
 
-# Logs
-*.log
-
-# Local jars / binaries
-docker/hive/lib/*.jar
-docker/hive/s3/*.jar
-docker/spark/jars/*.jar
-
-# Docker / local data
-data/
-tmp/
+# =========================
+# IDE
+# =========================
+.vscode/
+.idea/
