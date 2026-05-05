@@ -20,16 +20,16 @@ with DAG(
     bronze = BashOperator(
         task_id="run_bronze_ingestion",
         bash_command="""
-        docker exec docker-spark-1 \
-        python /opt/project/src/bronze/ingest_municipios.py
+        docker exec spark \
+        python /opt/project/src/ingestion/bronze/ingest_municipios.py
         """,
     )
 
     silver = BashOperator(
         task_id="run_silver_transformation",
         bash_command="""
-        docker exec docker-spark-1 \
-        python /opt/project/src/silver/silver_municipios.py
+        docker exec spark \
+        python /opt/project/src/ingestion/silver/silver_municipios.py
         """,
     )
 

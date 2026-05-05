@@ -14,7 +14,7 @@ with DAG(
 
     build_gold = BashOperator(
         task_id="build_municipios_by_state",
-        bash_command="docker exec docker-spark-1 python /opt/project/src/gold/build_municipios_by_state.py",
+        bash_command="docker exec spark python /opt/project/src/processing/gold/build_municipios_by_state.py",
     )
 
     build_gold
