@@ -61,6 +61,13 @@ services:
       AWS_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
       AWS_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
       AWS_REGION: us-east-1
+      S3_ACCESS_KEY: ${MINIO_ROOT_USER}
+      S3_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+      PURCHASE_POSTGRES_HOST: postgres
+      PURCHASE_POSTGRES_PORT: "5432"
+      PURCHASE_POSTGRES_DATABASE: purchase
+      PURCHASE_POSTGRES_USERNAME: ${POSTGRES_USER}
+      PURCHASE_POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     entrypoint: ["/bin/bash", "-c", "mkdir -p /tmp/spark-events && tail -f /dev/null"]
     ports:
       - "4040:4040"
@@ -104,6 +111,8 @@ services:
       AIRFLOW__CORE__LOAD_EXAMPLES: "false"
       AIRFLOW__WEBSERVER__EXPOSE_CONFIG: "true"
       AIRFLOW_UID: ${AIRFLOW_UID}
+      AIRFLOW__WEBSERVER__WORKERS: "1"
+      AIRFLOW__WEBSERVER__WEB_SERVER_WORKER_TIMEOUT: "300"
       PYTHONPATH: /opt/project/lakehouse-platform-core/src
     user: "0:0"
     volumes:
