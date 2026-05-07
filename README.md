@@ -103,3 +103,85 @@ configs/
 * Dimensional modeling
 * Data marts
 * Business datasets
+
+## Airflow DAG Registration Pattern
+
+The local Airflow setup uses a simple and explicit DAG registration pattern for ingestion pipelines.
+
+### Rule
+
+- one ingestion YAML = one Airflow DAG
+- one DAG registration file = one YAML pipeline
+
+### DAG file location
+
+Airflow DAG registration files must live in the Airflow DAG folder mounted by the local infrastructure.
+
+Example:
+
+```text
+airflow/dags/purchase_full_ingestion.py
+airflow/dags/crm_full_ingestion.py
+```
+
+## File naming convention
+
+### Use the pattern:
+
+```text
+<source_database>_full_ingestion.py
+```
+
+Examples:
+
+```text
+purchase_full_ingestion.py
+crm_full_ingestion.py
+```
+
+## DAG registration file content
+
+Each file should remain minimal and only register the DAG for one YAML definition.
+
+Example:
+
+```python
+from lakehouse_platform_core.airflow.ingestion_dag_builder import IngestionDagBuilder
+
+
+CONFIG_PATH = "/opt/project/lakehouse-ingestion-engine/configs/ingestion/purchase/full.yaml"
+
+
+dag = IngestionDagBuilder().build(CONFIG_PATH)
+```
+
+### Execution model
+
+Airflow orchestrates execution only.
+
+The actual ingestion processing runs inside the existing spark container through docker exec, using the runtime already validated for:
+
+* PySpark
+* PostgreSQL JDBC
+* MinIO / S3A
+* Iceberg
+
+### Operational requirements
+
+For DAG registration and execution to work correctly, the environment must provide:
+* access to the DAG folder from Airflow
+* access to lakehouse-platform-core
+* access to lakehouse-ingestion-engine
+* correct PYTHONPATH for Airflow imports
+* Docker socket access for Airflow
+* required environment variables available in the spark container
+
+### Onboarding a new ingestion DAG
+
+To register a new ingestion pipeline in Airflow:
+1. create the YAML in lakehouse-ingestion-engine
+2. ensure required environment variables exist in the spark container
+3. create one DAG registration file in airflow/dags
+4. point the file to the YAML path
+5. confirm the DAG appears in the Airflow UI
+6. execute and validate Bronze and Silver tasks

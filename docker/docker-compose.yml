@@ -68,6 +68,11 @@ services:
       PURCHASE_POSTGRES_DATABASE: purchase
       PURCHASE_POSTGRES_USERNAME: ${POSTGRES_USER}
       PURCHASE_POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      CRM_POSTGRES_HOST: postgres
+      CRM_POSTGRES_PORT: "5432"
+      CRM_POSTGRES_DATABASE: crm
+      CRM_POSTGRES_USERNAME: ${POSTGRES_USER}
+      CRM_POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     entrypoint: ["/bin/bash", "-c", "mkdir -p /tmp/spark-events && tail -f /dev/null"]
     ports:
       - "4040:4040"
@@ -77,8 +82,8 @@ services:
       - ./spark/jars/aws-java-sdk-bundle-1.12.262.jar:/opt/spark/jars/aws-java-sdk-bundle-1.12.262.jar
       - ./spark/jars/postgresql-42.7.3.jar:/opt/spark/jars/postgresql-42.7.3.jar
       - ${PIPELINES_HOST_PATH}:${PIPELINES_CONTAINER_PATH}
-      - /home/fabiano/Documentos/lakehouse-platform-core:/opt/project/lakehouse-platform-core
-      - /home/fabiano/Documentos/lakehouse-ingestion-engine:/opt/project/lakehouse-ingestion-engine
+      - ${LAKEHOUSE_PLATFORM_CORE_HOST_PATH}:/opt/project/lakehouse-platform-core
+      - ${LAKEHOUSE_INGESTION_ENGINE_HOST_PATH}:/opt/project/lakehouse-ingestion-engine
 
   airflow-init:
     image: ${AIRFLOW_IMAGE_NAME}
@@ -116,12 +121,12 @@ services:
       PYTHONPATH: /opt/project/lakehouse-platform-core/src
     user: "0:0"
     volumes:
-      - ../airflow/dags:/opt/airflow/dags
+      - ${AIRFLOW_DAGS_HOST_PATH}:/opt/airflow/dags
       - ../airflow/logs:/opt/airflow/logs
       - ../airflow/plugins:/opt/airflow/plugins
       - ${PIPELINES_HOST_PATH}:${PIPELINES_CONTAINER_PATH}
-      - /home/fabiano/Documentos/lakehouse-platform-core:/opt/project/lakehouse-platform-core
-      - /home/fabiano/Documentos/lakehouse-ingestion-engine:/opt/project/lakehouse-ingestion-engine
+      - ${LAKEHOUSE_PLATFORM_CORE_HOST_PATH}:/opt/project/lakehouse-platform-core
+      - ${LAKEHOUSE_INGESTION_ENGINE_HOST_PATH}:/opt/project/lakehouse-ingestion-engine
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - "8080:8080"
@@ -142,12 +147,12 @@ services:
       PYTHONPATH: /opt/project/lakehouse-platform-core/src
     user: "0:0"
     volumes:
-      - ../airflow/dags:/opt/airflow/dags
+      - ${AIRFLOW_DAGS_HOST_PATH}:/opt/airflow/dags
       - ../airflow/logs:/opt/airflow/logs
       - ../airflow/plugins:/opt/airflow/plugins
       - ${PIPELINES_HOST_PATH}:${PIPELINES_CONTAINER_PATH}
-      - /home/fabiano/Documentos/lakehouse-platform-core:/opt/project/lakehouse-platform-core
-      - /home/fabiano/Documentos/lakehouse-ingestion-engine:/opt/project/lakehouse-ingestion-engine
+      - ${LAKEHOUSE_PLATFORM_CORE_HOST_PATH}:/opt/project/lakehouse-platform-core
+      - ${LAKEHOUSE_INGESTION_ENGINE_HOST_PATH}:/opt/project/lakehouse-ingestion-engine
       - /var/run/docker.sock:/var/run/docker.sock
     command: scheduler
 
